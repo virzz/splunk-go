@@ -1,26 +1,12 @@
 package splunk_test
 
 import (
-	"os"
 	"testing"
 
-	"github.com/joho/godotenv"
 	"github.com/virzz/splunk-go"
 )
 
 var collection = "custom_collection"
-
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
-	splunk.New(&splunk.Config{
-		Host:     os.Getenv("SPLUNK_ENDPOINT"),
-		Username: os.Getenv("SPLUNK_USERNAME"),
-		Password: os.Getenv("SPLUNK_PASSWORD"),
-	})
-}
 
 type UserBaseline struct {
 	// Key string `json:"_key"`
