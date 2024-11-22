@@ -11,8 +11,3 @@ var (
 		// CSV: &csv{owner: "nobody", app: "search"},
 	}
 )
-
-func init() {
-	std.S = Storage
-	std.Storage = Storage
-}
