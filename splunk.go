@@ -2,6 +2,7 @@ package splunk
 
 import (
 	"context"
+	"crypto/tls"
 	"log/slog"
 	"strings"
 
@@ -50,6 +51,7 @@ func Init(ctx context.Context, cfg *Config) error {
 	client.SetBaseURL(cfg.Host)
 	client.SetBasicAuth(cfg.Username, cfg.Password)
 	client.SetHeader("Content-Type", "application/json")
+	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 	gCtx = ctx
 	return nil
 }
