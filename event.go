@@ -6,13 +6,15 @@ import (
 
 	"github.com/go-resty/resty/v2"
 	"github.com/pkg/errors"
-	"github.com/virzz/vlog"
 )
 
 var eventClient *EventClient
 
 type EventConfig struct {
-	Host, Index, Source, Token string
+	Host   string `json:"host" yaml:"host" mapstructure:"host"`
+	Index  string `json:"index" yaml:"index" mapstructure:"index"`
+	Source string `json:"source" yaml:"source" mapstructure:"source"`
+	Token  string `json:"token" yaml:"token" mapstructure:"token"`
 }
 
 type EventReq struct {
@@ -74,11 +76,13 @@ func (ec *EventClient) Send(req *EventReq) error {
 		SetHeaders(ec.headers)
 	rsp, err := _req.Post("/services/collector/raw")
 	if err != nil {
-		vlog.Error("Failed to send event to splunk", "err", err.Error())
+		log.Error("Failed to send event to splunk", "err", err.Error())
 		return err
 	}
 	if !rsp.IsSuccess() {
-		return errors.Errorf("Failed to send event to splunk: %d %s", rsp.StatusCode(), rsp.String())
+		err = errors.Errorf("%s %s", rsp.Status(), rsp.String())
+		log.Error("Failed to send event to splunk [not success]", "err", err.Error())
+		return err
 	}
 	return nil
 }
