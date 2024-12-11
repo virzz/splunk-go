@@ -18,10 +18,13 @@ type EventConfig struct {
 }
 
 type EventReq struct {
-	Name_        string `json:"name"`
-	Description_ string `json:"description"`
 	Timestamp_   int64  `json:"timestamp"`
-	Events_      []any  `json:"events"`
+	Name_        string `json:"name,omitempty"`
+	Description_ string `json:"description,omitempty"`
+	SourceType_  string `json:"sourcetype,omitempty"`
+	Label_       string `json:"label,omitempty"`
+	Events_      []any  `json:"events,omitempty"`
+	Event_       any    `json:"event,omitempty"`
 }
 
 func (e *EventReq) Name(v string) *EventReq {
@@ -36,6 +39,19 @@ func (e *EventReq) Description(v string) *EventReq {
 
 func (e *EventReq) Events(v any) *EventReq {
 	e.Events_ = append(e.Events_, v)
+	return e
+}
+
+func (e *EventReq) Event(v any) *EventReq {
+	e.Event_ = v
+	return e
+}
+func (e *EventReq) SourceType(v string) *EventReq {
+	e.SourceType_ = v
+	return e
+}
+func (e *EventReq) Label(v string) *EventReq {
+	e.Label_ = v
 	return e
 }
 
@@ -112,6 +128,9 @@ func Event(req *EventReq) error {
 	return eventClient.Send(req)
 }
 
-func EventRaw(req any) error {
+func RawEvent(req any) error {
+	return eventClient.Send(NewEventReq().Event(req))
+}
+func RawEvents(req any) error {
 	return eventClient.Send(NewEventReq().Events(req))
 }

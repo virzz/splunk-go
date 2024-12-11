@@ -21,7 +21,7 @@ func TestSendEvent(t *testing.T) {
 	if forwardTarget != "" {
 		eventClient.Headers(map[string]string{"X-Forward": forwardTarget})
 	}
-	err := splunk.EventRaw(&TestEventData{
+	err := splunk.RawEvent(&TestEventData{
 		Title:   "test",
 		Content: "test content",
 	})
