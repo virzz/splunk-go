@@ -11,7 +11,10 @@ import (
 )
 
 type Config struct {
-	Host, Username, Password string
+	Host     string      `json:"host" yaml:"host" mapstructure:"host"`
+	Username string      `json:"username" yaml:"username" mapstructure:"username"`
+	Password string      `json:"password" yaml:"password" mapstructure:"password"`
+	Event    EventConfig `json:"event" yaml:"event" mapstructure:"event"`
 }
 
 var (
@@ -50,10 +53,10 @@ func Init(ctx context.Context, cfg *Config) error {
 	if cfg.Username == "" || cfg.Password == "" {
 		return ErrInvalidAuth
 	}
-	client.SetBaseURL(cfg.Host)
-	client.SetBasicAuth(cfg.Username, cfg.Password)
-	client.SetHeader("Content-Type", "application/json")
-	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	client.SetBaseURL(cfg.Host).
+		SetBasicAuth(cfg.Username, cfg.Password).
+		SetHeader("Content-Type", "application/json").
+		SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 	gCtx = ctx
 	return nil
 }
