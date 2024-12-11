@@ -10,7 +10,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-type Config struct{ Host, Username, Password string }
+type Config struct {
+	Host, Username, Password string
+}
 
 var (
 	client      *resty.Client
