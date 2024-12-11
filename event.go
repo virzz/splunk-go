@@ -21,7 +21,7 @@ type EventReq struct {
 	Timestamp_   int64  `json:"timestamp"`
 	Name_        string `json:"name,omitempty"`
 	Description_ string `json:"description,omitempty"`
-	SourceType_  string `json:"sourcetype,omitempty"`
+	App_         string `json:"app,omitempty"`
 	Label_       string `json:"label,omitempty"`
 	Events_      []any  `json:"events,omitempty"`
 	Event_       any    `json:"event,omitempty"`
@@ -46,8 +46,8 @@ func (e *EventReq) Event(v any) *EventReq {
 	e.Event_ = v
 	return e
 }
-func (e *EventReq) SourceType(v string) *EventReq {
-	e.SourceType_ = v
+func (e *EventReq) App(v string) *EventReq {
+	e.App_ = v
 	return e
 }
 func (e *EventReq) Label(v string) *EventReq {
