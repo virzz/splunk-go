@@ -32,6 +32,8 @@ func persistentPreRunE(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	debug, _ := cmd.Flags().GetBool("debug")
+	splunk.SetDebug(debug)
 	return splunk.Init(cmd.Context(), &auth)
 }
 
@@ -70,6 +72,7 @@ var authCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolP("debug", "D", false, "Debug Mode")
 	authCmd.Flags().StringP("endpoint", "e", "", "Splunk Endpoint")
 	authCmd.Flags().StringP("username", "u", "", "Splunk Username")
 	authCmd.Flags().StringP("password", "p", "", "Splunk Password")

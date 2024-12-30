@@ -38,6 +38,7 @@ func AuthCheck() bool {
 		SetDebug(clientDebug).
 		Get("/services/authentication/current-context")
 	if err != nil {
+		log.Error("Failed to get auth", "err", err.Error())
 		return false
 	}
 	return r.IsSuccess()
@@ -55,8 +56,10 @@ func Init(ctx context.Context, cfg *Config) error {
 	}
 	client.SetBaseURL(cfg.Host).
 		SetBasicAuth(cfg.Username, cfg.Password).
-		SetHeader("Content-Type", "application/json").
-		SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+		SetHeader("Content-Type", "application/json")
+	if strings.HasPrefix(cfg.Host, "https") {
+		client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	}
 	gCtx = ctx
 	return nil
 }

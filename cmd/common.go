@@ -13,6 +13,7 @@ func generateSPL(cmd *cobra.Command, args []string) string {
 	dedups, _ := cmd.Flags().GetStringArray("dedup")
 	rename, _ := cmd.Flags().GetStringToString("rename")
 	table, _ := cmd.Flags().GetStringArray("table")
+	spl, _ := cmd.Flags().GetString("spl")
 
 	buf := strings.Builder{}
 	buf.WriteString(strings.Join(args, " "))
@@ -21,6 +22,9 @@ func generateSPL(cmd *cobra.Command, args []string) string {
 	}
 	if latest != "" {
 		buf.WriteString(" latest=" + latest)
+	}
+	if spl != "" {
+		buf.WriteString(spl)
 	}
 	if len(dedups) > 0 {
 		buf.WriteString(" | dedup " + strings.Join(dedups, ","))
@@ -35,6 +39,7 @@ func generateSPL(cmd *cobra.Command, args []string) string {
 var searchPFlag = pflag.NewFlagSet("search", pflag.ContinueOnError)
 
 func init() {
+	searchPFlag.StringP("spl", "a", "", "other spl")
 	searchPFlag.StringP("earliest", "e", "-1h", "earliest")
 	searchPFlag.StringP("latest", "l", "now", "latest")
 	searchPFlag.StringToStringP("rename", "r", map[string]string{}, "rename")
