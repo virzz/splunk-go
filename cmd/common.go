@@ -16,8 +16,12 @@ func generateSPL(cmd *cobra.Command, args []string) string {
 
 	buf := strings.Builder{}
 	buf.WriteString(strings.Join(args, " "))
-	buf.WriteString(" earliest=" + earliest)
-	buf.WriteString(" latest=" + latest)
+	if earliest != "" {
+		buf.WriteString(" earliest=" + earliest)
+	}
+	if latest != "" {
+		buf.WriteString(" latest=" + latest)
+	}
 	if len(dedups) > 0 {
 		buf.WriteString(" | dedup " + strings.Join(dedups, ","))
 	}

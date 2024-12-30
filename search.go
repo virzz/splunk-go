@@ -147,7 +147,10 @@ func (s *search) Download(sid, filename string, outputMode OutputMode) error {
 	}
 	rsp, err := client.R().
 		SetDebug(clientDebug).
-		SetQueryParam("output_mode", string(outputMode)).
+		SetQueryParams(map[string]string{
+			"output_mode": string(outputMode),
+			"count":       "0",
+		}).
 		SetPathParam("sid", sid).
 		SetOutput(filename).
 		Get("/services/search/jobs/{sid}/results")
