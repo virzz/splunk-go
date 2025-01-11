@@ -7,16 +7,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-type searches struct {
-}
+type searches struct{}
 
 var (
 	Searches = &searches{}
 )
 
-type SearchRsp struct {
-	Updated time.Time `json:"updated"`
-	Entry   []struct {
+type (
+	SearchesItem struct {
 		Name    string    `json:"name"`
 		Updated time.Time `json:"updated"`
 		Author  string    `json:"author"`
@@ -29,11 +27,16 @@ type SearchRsp struct {
 			IsScheduled      bool   `json:"is_scheduled"`
 			Search           string `json:"search"`
 		} `json:"content"`
-	} `json:"entry"`
-	Paging struct {
-		Total int `json:"total"`
-	} `json:"paging"`
-}
+	}
+
+	SearchRsp struct {
+		Updated time.Time      `json:"updated"`
+		Entry   []SearchesItem `json:"entry"`
+		Paging  struct {
+			Total int `json:"total"`
+		} `json:"paging"`
+	}
+)
 
 func (s *searches) List() (*SearchRsp, error) {
 	if client == nil {
