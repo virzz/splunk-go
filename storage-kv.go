@@ -6,7 +6,6 @@ import (
 
 type kv struct {
 	owner, app string
-	collection string
 }
 
 const (
@@ -88,7 +87,7 @@ func (s *kv) Query(collection string, query map[string]string, rsp any) error {
 			"collection": collection,
 		}).
 		SetDebug(clientDebug)
-	if query != nil && len(query) > 0 {
+	if len(query) > 0 {
 		queryBuf, err := json.Marshal(query)
 		if err != nil {
 			return err
